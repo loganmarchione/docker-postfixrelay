@@ -13,11 +13,11 @@ script:
   # Build the container
   - docker build --file Dockerfile --tag ${USER}/${REPO}:${VERSION} .
 
-  # Test if the container runs, then if geoipupdate is installed successfully
-  - docker run --name test-container --detach --env GeoIP_AccountID=${GeoIP_AccountID} --env GeoIP_LicenseKey=${GeoIP_LicenseKey} --env 'GeoIP_EditionIDs=GeoLite2-ASN GeoLite2-City GeoLite2-Country' --env 'GeoIP_Cron=5 4 15 * * /usr/bin/geoipupdate -v' --volume 'GeoIP_Data:/usr/share/GeoIP' ${USER}/${REPO}:${VERSION}
+  # Test if the container runs, then if postfix is installed successfully
+  - docker run --name test-container --detach --env TZ=America/New_York RELAY_HOST=smtp.domain.com RELAY_PORT=587 --volume 'postfixrelay_data:/var/spool/postfix' ${USER}/${REPO}:${VERSION}
   - sleep 10
   - docker ps -a
-  - docker exec --tty test-container /bin/sh -c "which geoipupdate && geoipupdate --version"
+  - docker exec --tty test-container /bin/sh -c "which postfix && postconf -d mail_version"
 
 after_success:
   # Login to DockerHub

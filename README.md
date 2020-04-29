@@ -1,7 +1,7 @@
 # docker-postfixrelay
 
 Runs Postfix (as a relay) in Docker
-  - Source code: [GitHub]()
+  - Source code: [GitHub](https://github.com/loganmarchione/docker-postfixrelay)
   - Docker container: [Docker Hub]()
   - Image base: [Alpine Linux](https://hub.docker.com/_/alpine/)
   - Init system: [dumb-init](https://github.com/Yelp/dumb-init)
