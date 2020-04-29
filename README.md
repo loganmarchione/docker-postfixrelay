@@ -4,7 +4,7 @@
 
 Runs Postfix (as a relay) in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-postfixrelay)
-  - Docker container: [Docker Hub]()
+  - Docker container: [Docker Hub](https://hub.docker.com/r/loganmarchione/docker-postfixrelay)
   - Image base: [Alpine Linux](https://hub.docker.com/_/alpine/)
   - Init system: [dumb-init](https://github.com/Yelp/dumb-init)
   - Application: [Postfix](http://www.postfix.org/)
@@ -53,7 +53,7 @@ Runs Postfix (as a relay) in Docker
 | RELAY_HOST  | Yes       | Public SMTP server to use        | smtp.gmail.com             |                                                              |
 | RELAY_PORT  | Yes       | Public SMTP port to use          | 587                        |                                                              |
 | RELAY_USER  | No        | Address to login to $RELAY_HOST  | SMTP username              |                                                              |
-| RELAY_PASS  | No        | Password to login to $RELAY_HOST | SMTP password              | If using 2FA, you will need to setup an app password         |
+| RELAY_PASS  | No        | Password to login to $RELAY_HOST | SMTP password              | If using Gmail 2FA, you will need to setup an app password   |
 | TEST_EMAIL  | No        | Address to receive test email    | receive_address@domain.com | If not set, test email will **not** be sent                  |
 
 ### Ports
