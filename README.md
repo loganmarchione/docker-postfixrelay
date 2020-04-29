@@ -102,5 +102,3 @@ volumes:
 ## TODO
 - [x] Add a [healthcheck](https://docs.docker.com/engine/reference/builder/#healthcheck)
 - [ ] Add TLS support for SMTPD and listen on 587
-
-
