@@ -14,8 +14,8 @@ Runs Postfix (as a relay) in Docker
   - Most home ISPs block port 25, so outbound emails must be relayed through an external SMTP server (e.g., Gmail)
   - This container acts as a single collections point for devices needing to send email
   - ⚠️ Postfix acts as an open relay. As such, this is not meant to be run on the internet, only on a trusted internal network! ⚠️
-```
 
+```
         Internal (LAN) network                                        Public internet
 
 ------------------
