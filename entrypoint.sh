@@ -35,7 +35,7 @@ postconf -e "mynetworks = 0.0.0.0/0"
 postconf -e "relayhost = [$RELAY_HOST]:$RELAY_PORT"
 
 # Client settings (for sending to the relay)
-postconf -e "smtp_tls_security_level = encrypt"
+postconf -e "smtp_tls_security_level = may"
 postconf -e "smtp_tls_loglevel = 1"
 postconf -e "smtp_sasl_auth_enable = yes"
 postconf -e "smtp_sasl_security_options = noanonymous"
