@@ -1,5 +1,7 @@
 # docker-postfixrelay
 
+[![Build Status](https://travis-ci.org/loganmarchione/docker-postfixrelay.svg?branch=master)](https://travis-ci.org/loganmarchione/docker-postfixrelay)
+
 Runs Postfix (as a relay) in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-postfixrelay)
   - Docker container: [Docker Hub]()
@@ -11,7 +13,7 @@ Runs Postfix (as a relay) in Docker
 ## Explanation
   - Most home ISPs block port 25, so outbound emails must be relayed through an external SMTP server (e.g., Gmail)
   - This container acts as a single collections point for devices needing to send email
-  - Postfix acts as a relay (listening on port 25) from an internal network to an external SMTP server (e.g., Gmail)
+  - ⚠️ Postfix acts as an open relay. As such, this is not meant to be run on the internet, only on a trusted internal network! ⚠️
 ```
 
         Internal (LAN) network                                        Public internet

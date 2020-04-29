@@ -14,7 +14,7 @@ script:
   - docker build --file Dockerfile --tag ${USER}/${REPO}:${VERSION} .
 
   # Test if the container runs, then if postfix is installed successfully
-  - docker run --name test-container --detach --env TZ=America/New_York RELAY_HOST=smtp.domain.com RELAY_PORT=587 --volume 'postfixrelay_data:/var/spool/postfix' ${USER}/${REPO}:${VERSION}
+  - docker run --name test-container --detach --env TZ=America/New_York --env RELAY_HOST=smtp.domain.com --env RELAY_PORT=587 --volume 'postfixrelay_data:/var/spool/postfix' ${USER}/${REPO}:${VERSION}
   - sleep 10
   - docker ps -a
   - docker exec --tty test-container /bin/sh -c "which postfix && postconf -d mail_version"
