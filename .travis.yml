@@ -1,0 +1,32 @@
+---
+
+env:
+  global:
+    - USER=loganmarchione
+    - REPO=docker-postfixrelay
+    - VERSION=$(cat VERSION)
+
+services:
+  - docker
+
+script:
+  # Build the container
+  - docker build --file Dockerfile --tag ${USER}/${REPO}:${VERSION} .
+
+  # Test if the container runs, then if geoipupdate is installed successfully
+  - docker run --name test-container --detach --env GeoIP_AccountID=${GeoIP_AccountID} --env GeoIP_LicenseKey=${GeoIP_LicenseKey} --env 'GeoIP_EditionIDs=GeoLite2-ASN GeoLite2-City GeoLite2-Country' --env 'GeoIP_Cron=5 4 15 * * /usr/bin/geoipupdate -v' --volume 'GeoIP_Data:/usr/share/GeoIP' ${USER}/${REPO}:${VERSION}
+  - sleep 10
+  - docker ps -a
+  - docker exec --tty test-container /bin/sh -c "which geoipupdate && geoipupdate --version"
+
+after_success:
+  # Login to DockerHub
+  - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+
+  # Image with numbered tag
+  - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:${VERSION}
+  - docker push ${USER}/${REPO}:${VERSION}
+
+  # Image with latest tag
+  - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:latest
+  - docker push ${USER}/${REPO}:latest

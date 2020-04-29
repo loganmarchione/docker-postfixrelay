@@ -14,26 +14,26 @@ Runs Postfix (as a relay) in Docker
   - Postfix acts as a relay (listening on port 25) from an internal network to an external SMTP server (e.g., Gmail)
 ```
 
-          Internal (LAN) network                                                Public internet
+        Internal (LAN) network                                        Public internet
 
 ------------------
 |                |
-| Device sending |                                |   |
-| email alert    | ----------------               |   |
-|                |                |               |   |
-------------------                |               |   |
-                                  |               | F |
-------------------                v               | i |                                             ---------------------
-|                |          ------------------    | r |      -----------------------------          |                   |
-| Device sending |          |                |    | e |      |                           |          | My personal email |
-| email alert    | -------> | This container | ---| w |----> | SMTP server (e.g., Gmail) | -------> | (recipient)       |
-|                |          |                |    | a |      |                           |          |                   |
-------------------          ------------------    | l |      -----------------------------          ---------------------
-                                  ^               | l |
-------------------                |               |   |
-|                |                |               |   |
-| Device sending |                |               |   |
-| email alert    | ----------------               |   |
+| Device sending |                            |   |
+| email alert    | -------------              |   |
+|                |             |              |   |
+------------------             |              |   |
+                               |              | F |
+------------------             v              | i |
+|                |       ------------------   | r |    -----------------------------       -------------------
+| Device sending |       |                |   | e |    |                           |       |                 |
+| email alert    | ----> | This container | --| w |--> | SMTP server (e.g., Gmail) | ----> | Recipient email |
+|                |       |                |   | a |    |                           |       |                 |
+------------------       ------------------   | l |    -----------------------------       -------------------
+                               ^              | l |
+------------------             |              |   |
+|                |             |              |   |
+| Device sending |             |              |   |
+| email alert    | -------------              |   |
 |                |
 ------------------
 ```
