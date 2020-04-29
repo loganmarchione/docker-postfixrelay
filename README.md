@@ -1,6 +1,7 @@
 # docker-postfixrelay
 
 [![Build Status](https://travis-ci.org/loganmarchione/docker-postfixrelay.svg?branch=master)](https://travis-ci.org/loganmarchione/docker-postfixrelay)
+[![](https://images.microbadger.com/badges/image/loganmarchione/docker-postfixrelay.svg)](https://microbadger.com/images/loganmarchione/docker-postfixrelay "Get your own image badge on microbadger.com")
 
 Runs Postfix (as a relay) in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-postfixrelay)
