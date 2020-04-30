@@ -1,8 +1,8 @@
 # docker-postfixrelay
 
 [![Build Status](https://travis-ci.org/loganmarchione/docker-postfixrelay.svg?branch=master)](https://travis-ci.org/loganmarchione/docker-postfixrelay)
-![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/loganmarchione/docker-postfixrelay)
-![MicroBadger Layers](https://img.shields.io/microbadger/layers/loganmarchione/docker-postfixrelay)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/loganmarchione/docker-postfixrelay)](https://hub.docker.com/r/loganmarchione/docker-postfixrelay)
+[![MicroBadger Layers](https://img.shields.io/microbadger/layers/loganmarchione/docker-postfixrelay)](https://microbadger.com/images/loganmarchione/docker-postfixrelay)
 
 Runs Postfix (as a relay) in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-postfixrelay)
