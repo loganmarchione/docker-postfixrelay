@@ -30,3 +30,6 @@ after_success:
   # Image with latest tag
   - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:latest
   - docker push ${USER}/${REPO}:latest
+
+  # Logout
+  - docker logout
