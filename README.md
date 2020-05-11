@@ -11,10 +11,11 @@ Runs Postfix (as a relay) in Docker
   - Init system: [dumb-init](https://github.com/Yelp/dumb-init)
   - Application: [Postfix](http://www.postfix.org/)
 
-
 ## Explanation
-  - Most home ISPs block port 25, so outbound emails must be relayed through an external SMTP server (e.g., Gmail)
-  - This container acts as a single collections point for devices needing to send email
+
+  - This runs Postfix (as a relay) in Docker.
+  - Most home ISPs block port 25, so outbound emails must be relayed through an external SMTP server (e.g., Gmail).
+  - This container acts as a single collections point for devices needing to send email.
   - ⚠️ Postfix acts as an open relay. As such, this is not meant to be run on the internet, only on a trusted internal network! ⚠️
 
 ```
@@ -41,6 +42,10 @@ Runs Postfix (as a relay) in Docker
 |                |
 ------------------
 ```
+
+## Requirements
+
+  - You must already have a account on an external SMTP server (e.g., Gmail).
 
 ## Docker image information
 
@@ -91,7 +96,7 @@ services:
       - '25:25'
     volumes:
       - 'postfixrelay_data:/var/spool/postfix'
-    image: registry.internal.loganmarchione.xyz/loganmarchione/docker-postfixrelay:1.0
+    image: registry.internal.loganmarchione.xyz/loganmarchione/docker-postfixrelay:latest
 
 networks:
   postfixrelay:
