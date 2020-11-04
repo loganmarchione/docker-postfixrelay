@@ -1,5 +1,4 @@
 ---
-
 env:
   global:
     - USER=loganmarchione
@@ -9,27 +8,34 @@ env:
 services:
   - docker
 
-script:
-  # Build the container
-  - docker build --file Dockerfile --tag ${USER}/${REPO}:${VERSION} .
+jobs:
+  include:
+    - stage: Build
 
-  # Test if the container runs, then if postfix is installed successfully
-  - docker run --name test-container --detach --env TZ=America/New_York --env RELAY_HOST=smtp.domain.com --env RELAY_PORT=587 --volume 'postfixrelay_data:/var/spool/postfix' ${USER}/${REPO}:${VERSION}
-  - sleep 10
-  - docker ps -a
-  - docker exec --tty test-container /bin/sh -c "which postfix && postconf -d mail_version"
+      script:
+        # Build the container
+        - docker build --file Dockerfile --tag ${USER}/${REPO}:${VERSION} .
+      
+        # Test if the container runs, then if postfix is installed successfully
+        - docker run --name test-container --detach --env TZ=America/New_York --env RELAY_HOST=smtp.domain.com --env RELAY_PORT=587 --volume 'postfixrelay_data:/var/spool/postfix' ${USER}/${REPO}:${VERSION}
+        - sleep 10
+        - docker ps -a
+        - docker exec --tty test-container /bin/sh -c "which postfix && postconf -d mail_version"
+      
+      before_deploy:
+        # Login to DockerHub
+        - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+        # Image with numbered tag
+        - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:${VERSION}
+        # Image with latest tag
+        - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:latest
 
-after_success:
-  # Login to DockerHub
-  - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+      deploy:
+        provider: script
+        script: docker push ${USER}/${REPO}:${VERSION} && docker push ${USER}/${REPO}:latest
+        on:
+          tags: true
 
-  # Image with numbered tag
-  - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:${VERSION}
-  - docker push ${USER}/${REPO}:${VERSION}
-
-  # Image with latest tag
-  - docker tag ${USER}/${REPO}:${VERSION} ${USER}/${REPO}:latest
-  - docker push ${USER}/${REPO}:latest
-
-  # Logout
-  - docker logout
+      after_deploy:
+        # Logout
+        - docker logout
