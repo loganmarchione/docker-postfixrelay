@@ -96,7 +96,7 @@ services:
       - '25:25'
     volumes:
       - 'postfixrelay_data:/var/spool/postfix'
-    image: registry.internal.loganmarchione.xyz/loganmarchione/docker-postfixrelay:latest
+    image: loganmarchione/docker-postfixrelay:latest
 
 networks:
   postfixrelay:
