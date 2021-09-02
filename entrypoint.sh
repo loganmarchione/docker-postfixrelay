@@ -40,17 +40,19 @@ postconf -e "smtp_tls_loglevel = 1"
 postconf -e "smtp_tls_note_starttls_offer = yes"
 postconf -e "smtp_sasl_auth_enable = yes"
 postconf -e "smtp_sasl_security_options = noanonymous"
-postconf -e "smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd"
+postconf -e "smtp_sasl_password_maps = lmdb:/etc/postfix/sasl_passwd"
 postconf -e "smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt"
 
 # Create password file
+# Alpine 3.13 dropped support for Berkeley DB, so using lmdb instead
+# https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.13.0#Deprecation_of_Berkeley_DB_.28BDB.29
 echo "[$RELAY_HOST]:$RELAY_PORT   $RELAY_USER:$RELAY_PASS" > /etc/postfix/sasl_passwd
 chown root:root /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/sasl_passwd
-postmap hash:/etc/postfix/sasl_passwd
+postmap lmdb:/etc/postfix/sasl_passwd
 rm -f /etc/postfix/sasl_passwd
-chown root:root /etc/postfix/sasl_passwd.db
-chmod 0600 /etc/postfix/sasl_passwd.db
+chown root:root /etc/postfix/sasl_passwd.lmdb
+chmod 600 /etc/postfix/sasl_passwd.lmdb
 
 # Rebuild the database for the mail aliases file
 newaliases
