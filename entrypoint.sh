@@ -35,8 +35,9 @@ postconf -e "mynetworks = 0.0.0.0/0"
 postconf -e "relayhost = [$RELAY_HOST]:$RELAY_PORT"
 
 # Client settings (for sending to the relay)
-postconf -e "smtp_tls_security_level = may"
+postconf -e "smtp_tls_security_level = encrypt"
 postconf -e "smtp_tls_loglevel = 1"
+postconf -e "smtp_tls_note_starttls_offer = yes"
 postconf -e "smtp_sasl_auth_enable = yes"
 postconf -e "smtp_sasl_security_options = noanonymous"
 postconf -e "smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd"
@@ -46,8 +47,10 @@ postconf -e "smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt"
 echo "[$RELAY_HOST]:$RELAY_PORT   $RELAY_USER:$RELAY_PASS" > /etc/postfix/sasl_passwd
 chown root:root /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/sasl_passwd
-postmap /etc/postfix/sasl_passwd
+postmap hash:/etc/postfix/sasl_passwd
 rm -f /etc/postfix/sasl_passwd
+chown root:root /etc/postfix/sasl_passwd.db
+chmod 0600 /etc/postfix/sasl_passwd.db
 
 # Rebuild the database for the mail aliases file
 newaliases
