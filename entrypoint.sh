@@ -34,6 +34,14 @@ postconf -e "mydestination ="
 postconf -e "mynetworks = 0.0.0.0/0"
 postconf -e "relayhost = [$RELAY_HOST]:$RELAY_PORT"
 
+# Set the "from" domain, needed for things like AWS SES
+if [[ -z "$MYORIGIN" ]]; then
+  printf "# ERROR: MYORIGIN is undefined, continuing\n"
+else
+  printf "# STATE: MYORIGIN is defined as $MYORIGIN\n"
+  postconf -e "myorigin = $MYORIGIN"
+fi
+
 # Client settings (for sending to the relay)
 postconf -e "smtp_tls_security_level = encrypt"
 postconf -e "smtp_tls_loglevel = 1"
