@@ -45,7 +45,8 @@ Runs Postfix (as a relay) in Docker
 
 ## Requirements
 
-  - You must already have a account on an external SMTP server (e.g., Gmail).
+  - You must already have a account on an external SMTP server (e.g., Gmail, AWS SES, etc...).
+  - Your external SMTP server must be using encryption (i.e., plaintext is not allowed)
 
 ## Docker image information
 
@@ -62,6 +63,7 @@ Runs Postfix (as a relay) in Docker
 | RELAY_USER  | No        | Address to login to $RELAY_HOST  | SMTP username              |                                                              |
 | RELAY_PASS  | No        | Password to login to $RELAY_HOST | SMTP password              | If using Gmail 2FA, you will need to setup an app password   |
 | TEST_EMAIL  | No        | Address to receive test email    | receive_address@domain.com | If not set, test email will **not** be sent                  |
+| MYORIGIN    | No        | Domain of the "from" address     | domain.com                 | Needed for things like AWS SES where the domain must be set  |
 
 ### Ports
 | Port on host              | Port in container | Comments            |
@@ -86,10 +88,9 @@ services:
       - RELAY_HOST=smtp.gmail.com
       - RELAY_PORT=587
       - RELAY_USER=your_email_here@gmail.com
-      - RELAY_PASS=your_app_password_here
+      - RELAY_PASS=your_password_here
       - TEST_EMAIL=test_email@domain.com
-    env_file:
-      - /custom/files/postfixrelay.env
+      - MYORIGIN=domain.com
     networks:
       - postfixrelay
     ports:
