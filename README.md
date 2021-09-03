@@ -2,7 +2,6 @@
 
 ![CI/CD](https://github.com/loganmarchione/docker-postfixrelay/workflows/CI/CD/badge.svg)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/loganmarchione/docker-postfixrelay)](https://hub.docker.com/r/loganmarchione/docker-postfixrelay)
-[![MicroBadger Layers](https://img.shields.io/microbadger/layers/loganmarchione/docker-postfixrelay)](https://microbadger.com/images/loganmarchione/docker-postfixrelay)
 
 Runs Postfix (as a relay) in Docker
   - Source code: [GitHub](https://github.com/loganmarchione/docker-postfixrelay)
