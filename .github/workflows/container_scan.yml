@@ -13,7 +13,7 @@ env:
 
 jobs:
   alpine_ci:
-    name: Build and test
+    name: Build and scan
 
     runs-on: ubuntu-latest
 
