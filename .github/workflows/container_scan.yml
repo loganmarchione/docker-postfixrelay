@@ -1,0 +1,45 @@
+name: Container scan on commit to master
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 5 * * 0"
+
+env:
+  USER: loganmarchione
+  REPO: docker-postfixrelay
+
+jobs:
+  alpine_ci:
+    name: Build and test
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the codebase
+      uses: actions/checkout@v2
+
+    - name: Set variables
+      run: |
+        VER=$(cat VERSION)
+        echo "VERSION=$VER" >> $GITHUB_ENV
+
+    - name: Build Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        push: false
+        context: .
+        file: Dockerfile
+        load: true
+        tags: |
+          ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+          ${{ env.USER }}/${{ env.REPO }}:latest
+
+    - name: Container scan
+      uses: azure/container-scan@v0
+      with:
+        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
+        severity-threshold: HIGH
+        run-quality-checks: true
