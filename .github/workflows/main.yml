@@ -48,7 +48,7 @@ jobs:
       uses: azure/container-scan@v0
       with:
         image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
-        severity-threshold: HIGH
+        severity-threshold: CRITICAL
         run-quality-checks: true
 
   alpine_cd:
