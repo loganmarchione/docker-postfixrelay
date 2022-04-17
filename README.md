@@ -9,6 +9,7 @@ Runs Postfix (as a relay) in Docker
   - Image base: [Alpine Linux](https://hub.docker.com/_/alpine/)
   - Init system: [dumb-init](https://github.com/Yelp/dumb-init)
   - Application: [Postfix](http://www.postfix.org/)
+  - Architecture: `linux/amd64,linux/arm64,linux/arm/v7`
 
 ## Explanation
 
