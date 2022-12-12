@@ -31,7 +31,7 @@ postconf -e "maillog_file = /dev/stdout"
 printf "# STATE: Configuring Postfix\n"
 postconf -e "inet_interfaces = all"
 postconf -e "mydestination ="
-postconf -e "mynetworks = 0.0.0.0/0"
+postconf -e "mynetworks = ${MYNETWORKS:=0.0.0.0/0}"
 postconf -e "relayhost = [$RELAY_HOST]:$RELAY_PORT"
 
 # Set the "from" domain, needed for things like AWS SES

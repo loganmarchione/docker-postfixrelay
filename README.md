@@ -55,15 +55,16 @@ Runs Postfix (as a relay) in Docker
   - `X.X.X`: [Semantic version](https://semver.org/) (use if you want to stick on a specific version)
 
 ### Environment variables
-| Variable    | Required? | Definition                       | Example                    | Comments                                                     |
-|-------------|-----------|----------------------------------|----------------------------|--------------------------------------------------------------|
-| TZ          | Yes       | Timezone                         | America/New_York           | https://en.wikipedia.org/wiki/List_of_tz_database_time_zones |
-| RELAY_HOST  | Yes       | Public SMTP server to use        | smtp.gmail.com             |                                                              |
-| RELAY_PORT  | Yes       | Public SMTP port to use          | 587                        |                                                              |
-| RELAY_USER  | No        | Address to login to $RELAY_HOST  | SMTP username              |                                                              |
-| RELAY_PASS  | No        | Password to login to $RELAY_HOST | SMTP password              | If using Gmail 2FA, you will need to setup an app password   |
-| TEST_EMAIL  | No        | Address to receive test email    | receive_address@domain.com | If not set, test email will **not** be sent                  |
-| MYORIGIN    | No        | Domain of the "from" address     | domain.com                 | Needed for things like AWS SES where the domain must be set  |
+| Variable    | Required?                 | Definition                                  | Example                    | Comments                                                     |
+|-------------|---------------------------|---------------------------------------------|----------------------------|--------------------------------------------------------------|
+| TZ          | Yes                       | Timezone                                    | America/New_York           | https://en.wikipedia.org/wiki/List_of_tz_database_time_zones |
+| RELAY_HOST  | Yes                       | Public SMTP server to use                   | smtp.gmail.com             |                                                              |
+| RELAY_PORT  | Yes                       | Public SMTP port to use                     | 587                        |                                                              |
+| RELAY_USER  | No                        | Address to login to $RELAY_HOST             | SMTP username              |                                                              |
+| RELAY_PASS  | No                        | Password to login to $RELAY_HOST            | SMTP password              | If using Gmail 2FA, you will need to setup an app password   |
+| TEST_EMAIL  | No                        | Address to receive test email               | receive_address@domain.com | If not set, test email will **not** be sent                  |
+| MYORIGIN    | No                        | Domain of the "from" address                | domain.com                 | Needed for things like AWS SES where the domain must be set  |
+| MYNETWORKS  | No (default: 0.0.0.0/0)   | Networks that Postfix will forward mail for | 1.2.3.4/24                 |                                                              |
 
 ### Ports
 | Port on host              | Port in container | Comments            |
@@ -91,6 +92,7 @@ services:
       - RELAY_PASS=your_password_here
       - TEST_EMAIL=test_email@domain.com
       - MYORIGIN=domain.com
+      - MYNETWORKS=1.2.3.4/24
     networks:
       - postfixrelay
     ports:
