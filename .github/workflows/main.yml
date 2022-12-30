@@ -13,7 +13,7 @@ env:
   REPO: docker-postfixrelay
 
 jobs:
-  alpine_ci:
+  ci:
     name: Build and test
 
     runs-on: ubuntu-latest
@@ -48,17 +48,22 @@ jobs:
         docker ps -a
         docker exec --tty test-container /bin/sh -c "which postfix && postconf -d mail_version"
 
-    - name: Container scan
-      uses: azure/container-scan@v0
+    - name: Container scan with Dockle
+      uses: docker://goodwithtech/dockle:v0.4.9
       with:
-        image-name: ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}
-        severity-threshold: CRITICAL
-        run-quality-checks: true
+        args: '--exit-code 1 --format list --ignore CIS-DI-0001 ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
 
-  alpine_cd:
+    - name: Container scan with Trivy
+      uses: aquasecurity/trivy-action@0.8.0
+      with:
+        scan-type: 'image'
+        image-ref: '${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
+        trivy-config: ./github/trivy.yaml
+
+  cd:
     name: Deploy
 
-    needs: alpine_ci
+    needs: ci
     runs-on: ubuntu-latest
 
     steps:
