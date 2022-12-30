@@ -1,0 +1,5 @@
+format: table
+severity:
+  - CRITICAL
+vulnerability:
+  ignore-unfixed: true
