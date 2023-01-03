@@ -49,9 +49,13 @@ jobs:
         docker exec --tty test-container /bin/sh -c "which postfix && postconf -d mail_version"
 
     - name: Container scan with Dockle
-      uses: docker://goodwithtech/dockle:v0.4.10
+      uses: goodwithtech/dockle-action@0.1.0
       with:
-        args: '--exit-code 1 --format list --ignore CIS-DI-0001 ${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
+        image: '${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
+        format: 'list'
+        exit-code: '1'
+        exit-level: 'warn'
+        ignore: 'CIS-DI-0001'
 
     - name: Container scan with Trivy
       uses: aquasecurity/trivy-action@0.8.0
