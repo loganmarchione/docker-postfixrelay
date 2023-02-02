@@ -58,7 +58,7 @@ jobs:
         ignore: 'CIS-DI-0001'
 
     - name: Container scan with Trivy
-      uses: aquasecurity/trivy-action@0.8.0
+      uses: aquasecurity/trivy-action@0.9.0
       with:
         scan-type: 'image'
         image-ref: '${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
