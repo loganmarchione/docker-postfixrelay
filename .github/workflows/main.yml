@@ -22,7 +22,7 @@ jobs:
     - name: Check out the codebase
       uses: actions/checkout@v3
 
-    - name: Link Dockerfile with Hadolint
+    - name: Lint Dockerfile with Hadolint
       uses: hadolint/hadolint-action@v3.1.0
       with:
         failure-threshold: error
