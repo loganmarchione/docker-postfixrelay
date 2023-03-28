@@ -13,9 +13,25 @@ env:
   REPO: docker-postfixrelay
 
 jobs:
+  lint:
+    name: Lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the codebase
+      uses: actions/checkout@v3
+
+    - name: Link Dockerfile with Hadolint
+      uses: hadolint/hadolint-action@v3.1.0
+      with:
+        failure-threshold: error
+        ignore: DL3008,DL3018
+
   ci:
     name: Build and test
 
+    needs: lint
     runs-on: ubuntu-latest
 
     steps:
@@ -56,12 +72,6 @@ jobs:
         exit-code: '1'
         exit-level: 'warn'
         ignore: 'CIS-DI-0001'
-
-    - name: Container scan with hadolint
-      uses: hadolint/hadolint-action@v3.1.0
-      with:
-        failure-threshold: error
-        ignore: DL3008,DL3018
 
     - name: Container scan with Trivy
       uses: aquasecurity/trivy-action@0.9.2
