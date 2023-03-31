@@ -64,7 +64,7 @@ Runs Postfix (as a relay) in Docker
 | RELAY_PASS  | No                        | Password to login to $RELAY_HOST            | SMTP password              | If using Gmail 2FA, you will need to setup an app password   |
 | TEST_EMAIL  | No                        | Address to receive test email               | receive_address@domain.com | If not set, test email will **not** be sent                  |
 | MYORIGIN    | No                        | Domain of the "from" address                | domain.com                 | Needed for things like AWS SES where the domain must be set  |
-| MYNETWORKS  | No (default: 0.0.0.0/0)   | Networks that Postfix will forward mail for | 1.2.3.4/24, 5.6.7.8/24     | Single or multiple trusted network separated with a comma |
+| MYNETWORKS  | No (default: 0.0.0.0/0)   | Networks that Postfix will forward mail for | 1.2.3.4/24, 5.6.7.8/24     | Single or multiple trusted network separated with a comma    |
 
 ### Ports
 | Port on host              | Port in container | Comments            |
@@ -82,7 +82,7 @@ Below is an example docker-compose.yml file.
 version: '3'
 services:
   postfixrelay:
-    container_name: postfixrelay
+    container_name: docker-postfixrelay
     restart: unless-stopped
     environment:
       - TZ=America/New_York
@@ -107,6 +107,17 @@ networks:
 volumes:
   postfixrelay_data:
     driver: local
+```
+
+```
+# Build the Dockerfile
+docker compose -f docker-compose-dev.yml up -d
+
+# View logs
+docker compose -f docker-compose-dev.yml logs -f
+
+# Destroy when done
+docker compose -f docker-compose-dev.yml down
 ```
 
 ## TODO

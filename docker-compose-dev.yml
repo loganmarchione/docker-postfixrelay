@@ -1,0 +1,30 @@
+version: '3'
+services:
+  postfixrelay:
+    container_name: docker-webdav-nginx
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - TZ=America/New_York
+      - RELAY_HOST=smtp.gmail.com
+      - RELAY_PORT=587
+      - RELAY_USER=your_email_here@gmail.com
+      - RELAY_PASS=your_password_here
+      #- TEST_EMAIL=test_email@domain.com
+      - MYORIGIN=domain.com
+      - MYNETWORKS=1.2.3.4/24
+    networks:
+      - postfixrelay
+    ports:
+      - '25:25'
+    volumes:
+      - 'postfixrelay_data:/var/spool/postfix'
+
+networks:
+  postfixrelay:
+
+volumes:
+  postfixrelay_data:
+    driver: local
