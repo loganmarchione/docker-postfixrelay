@@ -109,6 +109,7 @@ volumes:
     driver: local
 ```
 
+Below is an example of running locally (used to edit/test/debug).
 ```
 # Build the Dockerfile
 docker compose -f docker-compose-dev.yml up -d
