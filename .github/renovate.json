@@ -14,5 +14,8 @@
       "automergeType": "pr",
       "platformAutomerge": true
     }
-  ]
+  ],
+  "docker-compose": {
+    "ignorePaths": ["docker-compose-dev.yml"]
+  }
 }
