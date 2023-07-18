@@ -42,6 +42,14 @@ else
   postconf -e "myorigin = $MYORIGIN"
 fi
 
+# Set the message_size_limit
+if [[ -z "$MSG_SIZE" ]]; then
+  printf "# ERROR: MSG_SIZE is undefined, continuing\n"
+else
+  printf "# STATE: MSG_SIZE is defined as $MSG_SIZE\n"
+  postconf -e "message_size_limit = $MSG_SIZE"
+fi
+
 # Client settings (for sending to the relay)
 postconf -e "smtp_tls_security_level = encrypt"
 postconf -e "smtp_tls_loglevel = 1"

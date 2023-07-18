@@ -65,6 +65,7 @@ Runs Postfix (as a relay) in Docker
 | TEST_EMAIL  | No                        | Address to receive test email               | receive_address@domain.com | If not set, test email will **not** be sent                  |
 | MYORIGIN    | No                        | Domain of the "from" address                | domain.com                 | Needed for things like AWS SES where the domain must be set  |
 | MYNETWORKS  | No (default: 0.0.0.0/0)   | Networks that Postfix will forward mail for | 1.2.3.4/24, 5.6.7.8/24     | Single or multiple trusted network separated with a comma    |
+| MSG_SIZE    | No (default: 10240000)    | Postfix `message_size_limit` in bytes       | 30720000                   |                                                              |
 
 ### Ports
 | Port on host              | Port in container | Comments            |
@@ -93,6 +94,7 @@ services:
       - TEST_EMAIL=test_email@domain.com
       - MYORIGIN=domain.com
       - MYNETWORKS=1.2.3.4/24
+      - MSG_SIZE=30720000
     networks:
       - postfixrelay
     ports:

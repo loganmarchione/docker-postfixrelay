@@ -15,6 +15,7 @@ services:
       #- TEST_EMAIL=test_email@domain.com
       - MYORIGIN=domain.com
       - MYNETWORKS=1.2.3.4/24
+      - MSG_SIZE=30720000
     networks:
       - postfixrelay
     ports:
