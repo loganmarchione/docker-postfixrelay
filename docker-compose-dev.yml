@@ -1,7 +1,7 @@
 version: '3'
 services:
   postfixrelay:
-    container_name: docker-webdav-nginx
+    container_name: docker-postfixrelay
     restart: unless-stopped
     build:
       context: .
