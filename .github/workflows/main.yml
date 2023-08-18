@@ -65,7 +65,7 @@ jobs:
         docker exec --tty test-container /bin/sh -c "which postfix && postconf -d mail_version"
 
     - name: Container scan with Dockle
-      uses: goodwithtech/dockle-action@0.1.0
+      uses: goodwithtech/dockle-action@v0.1.1
       with:
         image: '${{ env.USER }}/${{ env.REPO }}:${{ env.VERSION }}'
         format: 'list'
