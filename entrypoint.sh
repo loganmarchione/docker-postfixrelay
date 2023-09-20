@@ -42,6 +42,15 @@ else
   postconf -e "myorigin = $MYORIGIN"
 fi
 
+# Set the "from" address, needed for some SMTP providers
+if [[ -z "$FROMADDRESS" ]]; then
+  printf "# ERROR: FROMADDRESS is undefined, continuing\n"
+else
+  printf "# STATE: FROMADDRESS is defined as $FROMADDRESS\n"
+  postconf -e "smtp_header_checks=regexp:/etc/postfix/header_checks"
+  echo "/^From:.*/ REPLACE From: $FROMADDRESS" | tee /etc/postfix/header_checks > /dev/null
+fi
+
 # Set the message_size_limit
 if [[ -z "$MSG_SIZE" ]]; then
   printf "# ERROR: MSG_SIZE is undefined, continuing\n"

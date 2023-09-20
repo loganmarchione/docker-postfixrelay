@@ -12,8 +12,9 @@ services:
       - RELAY_PORT=587
       - RELAY_USER=your_email_here@gmail.com
       - RELAY_PASS=your_password_here
-      #- TEST_EMAIL=test_email@domain.com
+      - TEST_EMAIL=test_email@domain.com
       - MYORIGIN=domain.com
+      - FROMADDRESS=my_email@domain.com
       - MYNETWORKS=1.2.3.4/24
       - MSG_SIZE=30720000
     networks:
