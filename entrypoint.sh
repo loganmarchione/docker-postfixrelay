@@ -43,6 +43,7 @@ else
 fi
 
 # Set the "from" address, needed for some SMTP providers
+# https://serverfault.com/questions/147921/forcing-the-from-address-when-postfix-relays-over-smtp
 if [[ -z "$FROMADDRESS" ]]; then
   printf "# ERROR: FROMADDRESS is undefined, continuing\n"
 else
