@@ -47,8 +47,10 @@ if [[ -z "$FROMADDRESS" ]]; then
   printf "# ERROR: FROMADDRESS is undefined, continuing\n"
 else
   printf "# STATE: FROMADDRESS is defined as $FROMADDRESS\n"
-  postconf -e "smtp_header_checks=regexp:/etc/postfix/header_checks"
+  postconf -e "smtp_header_checks = regexp:/etc/postfix/header_checks"
   echo "/^From:.*/ REPLACE From: $FROMADDRESS" | tee /etc/postfix/header_checks > /dev/null
+  postconf -e "sender_canonical_maps = regexp:/etc/postfix/sender_canonical_maps"
+  echo "/.+/ $FROMADDRESS" | tee /etc/postfix/sender_canonical_maps > /dev/null
 fi
 
 # Set the message_size_limit
