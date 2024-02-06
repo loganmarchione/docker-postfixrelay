@@ -45,7 +45,7 @@ Runs Postfix (as a relay) in Docker
 
 ## Requirements
 
-  - You must already have a account on an external SMTP server (e.g., Gmail, AWS SES, etc...).
+  - You must already have an account on an external SMTP server (e.g., Gmail, AWS SES, etc...).
   - Your external SMTP server must be using encryption (i.e., plaintext is not allowed)
 
 ## Docker image information
