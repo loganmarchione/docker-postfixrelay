@@ -30,4 +30,4 @@ RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/entrypoint.sh"]
 
-HEALTHCHECK CMD nc -z localhost 25 || exit 1
+HEALTHCHECK CMD netstat -ltn | grep -c ":25" || exit 1
