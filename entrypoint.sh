@@ -36,7 +36,7 @@ postconf -e "relayhost = [$RELAY_HOST]:$RELAY_PORT"
 
 # Set the "from" domain, needed for things like AWS SES
 if [[ -z "$MYORIGIN" ]]; then
-  printf "# ERROR: MYORIGIN is undefined, continuing\n"
+  printf "# WARN: MYORIGIN is undefined, continuing\n"
 else
   printf "# STATE: MYORIGIN is defined as $MYORIGIN\n"
   postconf -e "myorigin = $MYORIGIN"
@@ -45,7 +45,7 @@ fi
 # Set the "from" address, needed for some SMTP providers
 # https://serverfault.com/questions/147921/forcing-the-from-address-when-postfix-relays-over-smtp
 if [[ -z "$FROMADDRESS" ]]; then
-  printf "# ERROR: FROMADDRESS is undefined, continuing\n"
+  printf "# WARN: FROMADDRESS is undefined, continuing\n"
 else
   printf "# STATE: FROMADDRESS is defined as $FROMADDRESS\n"
   postconf -e "smtp_header_checks = regexp:/etc/postfix/header_checks"
@@ -56,7 +56,7 @@ fi
 
 # Set the message_size_limit
 if [[ -z "$MSG_SIZE" ]]; then
-  printf "# ERROR: MSG_SIZE is undefined, continuing\n"
+  printf "# WARN: MSG_SIZE is undefined, continuing\n"
 else
   printf "# STATE: MSG_SIZE is defined as $MSG_SIZE\n"
   postconf -e "message_size_limit = $MSG_SIZE"
@@ -88,7 +88,7 @@ newaliases
 # Send test email
 # Test for variable and queue the message now, it will send when Postfix starts
 if [[ -z "$TEST_EMAIL" ]]; then
-  printf "# ERROR: TEST_EMAIL is undefined, continuing without a test email\n"
+  printf "# WARN: TEST_EMAIL is undefined, continuing without a test email\n"
 else
   printf "# STATE: Sending test email\n"
   echo -e "Subject: Postfix relay test \r\nTest of Postfix relay from Docker container startup\nSent on $(date)\n" | sendmail -F "[Alert from Postfix]" "$TEST_EMAIL"
