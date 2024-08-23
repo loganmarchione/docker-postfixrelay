@@ -24,8 +24,12 @@ printf "# STATE: Changing permissions\n"
 postfix set-permissions
 
 # Set logging
-printf "# STATE: Setting Postfix logging to stdout\n"
-postconf -e "maillog_file = /dev/stdout"
+if [[ "$LOG_DISABLE" == "true" ]]; then
+  printf "# WARN: Setting Postfix logging to /dev/null\n"
+else
+  printf "# STATE: Setting Postfix logging to /dev/stdout\n"
+  postconf -e "maillog_file = /dev/stdout"
+fi
 
 # Configure Postfix
 printf "# STATE: Configuring Postfix\n"
@@ -97,4 +101,8 @@ fi
 # Start Postfix
 # Nothing else can log after this
 printf "# STATE: Starting Postfix\n"
-postfix start-fg
+if [[ "$LOG_DISABLE" == "true" ]]; then
+  postfix start-fg > /dev/null
+else
+  postfix start-fg
+fi

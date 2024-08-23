@@ -67,6 +67,7 @@ Runs Postfix (as a relay) in Docker
 | FROMADDRESS | No                        | Changes the "from" address                  | my_email@domain.com        | Needed for some SMTP services where the FROM address needs to be set, [fixes issue 19](https://github.com/loganmarchione/docker-postfixrelay/issues/19) |
 | MYNETWORKS  | No (default: 0.0.0.0/0)   | Networks that Postfix will forward mail for | 1.2.3.4/24, 5.6.7.8/24     | Single or multiple trusted networks separated with a comma   |
 | MSG_SIZE    | No (default: 10240000)    | Postfix `message_size_limit` in bytes       | 30720000                   |                                                              |
+| LOG_DISABLE | No (default: false)       | Setting to `true` disables logging          | true                       |                                                              |
 
 ### Ports
 | Port on host              | Port in container | Comments            |
@@ -97,6 +98,7 @@ services:
       - FROMADDRESS=my_email@domain.com
       - MYNETWORKS=1.2.3.4/24
       - MSG_SIZE=30720000
+      - LOG_DISABLE=true
     networks:
       - postfixrelay
     ports:

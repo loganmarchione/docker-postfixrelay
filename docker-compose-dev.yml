@@ -17,6 +17,7 @@ services:
       - FROMADDRESS=my_email@domain.com
       - MYNETWORKS=1.2.3.4/24
       - MSG_SIZE=30720000
+      - LOG_DISABLE=true
     networks:
       - postfixrelay
     ports:
