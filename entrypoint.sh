@@ -98,6 +98,11 @@ else
   echo -e "Subject: Postfix relay test \r\nTest of Postfix relay from Docker container startup\nSent on $(date)\n" | sendmail -F "[Alert from Postfix]" "$TEST_EMAIL"
 fi
 
+# Enable SUBMISSIONS/TLS
+if [[ "$RELAY_SUBMISSIONS" == "true" ]]; then
+  postconf -e "smtp_tls_wrappermode = yes"
+fi
+
 # Start Postfix
 # Nothing else can log after this
 printf "# STATE: Starting Postfix\n"

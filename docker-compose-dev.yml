@@ -12,6 +12,7 @@ services:
       - RELAY_PORT=587
       - RELAY_USER=your_email_here@gmail.com
       - RELAY_PASS=your_password_here
+      - RELAY_SUBMISSIONS=true
       - TEST_EMAIL=test_email@domain.com
       - MYORIGIN=domain.com
       - FROMADDRESS=my_email@domain.com
