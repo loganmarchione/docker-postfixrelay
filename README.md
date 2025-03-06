@@ -99,7 +99,6 @@ services:
       # - RELAY_USER_FILE=/run/secrets/RELAY_USER_FILE
       # - RELAY_PASS_FILE=/run/secrets/RELAY_PASS_FILE
       - RELAY_SUBMISSIONS=true
-      - RELAY_SUBMISSIONS=true
       - TEST_EMAIL=test_email@domain.com
       - MYORIGIN=domain.com
       - FROMADDRESS=my_email@domain.com
