@@ -92,8 +92,13 @@ services:
       - TZ=America/New_York
       - RELAY_HOST=smtp.gmail.com
       - RELAY_PORT=587
+      # comment out if using secrets
       - RELAY_USER=your_email_here@gmail.com
       - RELAY_PASS=your_password_here
+      # uncomment below if using secrets
+      # - RELAY_USER_FILE=/run/secrets/RELAY_USER_FILE
+      # - RELAY_PASS_FILE=/run/secrets/RELAY_PASS_FILE
+      - RELAY_SUBMISSIONS=true
       - RELAY_SUBMISSIONS=true
       - TEST_EMAIL=test_email@domain.com
       - MYORIGIN=domain.com
@@ -101,6 +106,10 @@ services:
       - MYNETWORKS=1.2.3.4/24
       - MSG_SIZE=30720000
       - LOG_DISABLE=true
+    # uncomment below if using secrets
+    # secrets:
+    #   - RELAY_USER_FILE
+    #   - RELAY_PASS_FILE
     networks:
       - postfixrelay
     ports:
@@ -115,7 +124,16 @@ networks:
 volumes:
   postfixrelay_data:
     driver: local
+
+# uncomment below if using secrets
+# secrets:
+#    RELAY_USER_FILE:
+#      file: ./relay_user.txt
+#    RELAY_PASS_FILE:
+#      file: ./relay_pass.txt
 ```
+
+### Debugging only
 
 Below is an example of running locally (used to edit/test/debug).
 ```
