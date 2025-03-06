@@ -1,8 +1,57 @@
-#!/bin/sh -e
+#!/bin/bash -e
+
+########################################
+# functions
+########################################
+
+# shamelessly stolen from here
+# https://github.com/docker-library/postgres/blob/cc254e85ed86e1f8c9052f9cbf0e3320324f0421/17/bookworm/docker-entrypoint.sh#L5-L25
+#
+# usage: file_env VAR [DEFAULT]
+#    ie: file_env 'XYZ_DB_PASSWORD' 'example'
+# (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
+#  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
+file_env() {
+  # Main variable name (e.g., RELAY_PASS)
+  local var="$1"
+  # Alternative file-based variable (e.g., RELAY_PASS_FILE)
+  local fileVar="${var}_FILE"
+  # Optional default value if neither is set
+  local def="${2:-}"
+
+  # Make sure both are not set at the same time
+  if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
+    printf >&2 '#ERROR: Both %s and %s are set (but are exclusive)\n' "$var" "$fileVar"
+    exit 1
+  fi
+
+  # Set value as default first
+  local val="$def"
+
+  # If var is set, set value to var
+  if [ "${!var:-}" ]; then
+    val="${!var}"
+  # Else, if using fileVar, set value to fileVar
+  elif [ "${!fileVar:-}" ]; then
+    val="$(< "${!fileVar}")"
+  fi
+
+  # Clean up
+  export "$var"="$val"
+  unset "$fileVar"
+}
+
+########################################
+# script starts here
+########################################
 
 printf "#####\n"
 printf "# Container starting up!\n"
 printf "#####\n"
+
+# Check for Docker secrets before using
+file_env 'RELAY_USER'
+file_env 'RELAY_PASS'
 
 # Test variables for timezone
 if [ -z "$TZ" ]; then
