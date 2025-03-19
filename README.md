@@ -145,7 +145,3 @@ docker compose -f docker-compose-dev.yml logs -f
 # Destroy when done
 docker compose -f docker-compose-dev.yml down
 ```
-
-## TODO
-- [x] ~~Add a [healthcheck](https://docs.docker.com/engine/reference/builder/#healthcheck)~~
-- [ ] Add TLS support for SMTPD and listen on 587
