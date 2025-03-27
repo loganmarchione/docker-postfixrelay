@@ -119,7 +119,6 @@ fi
 postconf -e "smtp_tls_security_level = encrypt"
 postconf -e "smtp_tls_loglevel = 1"
 postconf -e "smtp_tls_note_starttls_offer = yes"
-postconf -e "smtp_sasl_auth_enable = yes"
 postconf -e "smtp_sasl_security_options = noanonymous"
 postconf -e "smtp_sasl_password_maps = lmdb:/etc/postfix/sasl_passwd"
 postconf -e "smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt"
@@ -127,7 +126,16 @@ postconf -e "smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt"
 # Create password file
 # Alpine 3.13 dropped support for Berkeley DB, so using lmdb instead
 # https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.13.0#Deprecation_of_Berkeley_DB_.28BDB.29
-echo "[$RELAY_HOST]:$RELAY_PORT   $RELAY_USER:$RELAY_PASS" > /etc/postfix/sasl_passwd
+# if user and pass are set, echo them to a file and enable SASL auth
+if [ -n "$RELAY_USER" ] && [ -n "$RELAY_PASS" ]; then
+  echo "[$RELAY_HOST]:$RELAY_PORT   $RELAY_USER:$RELAY_PASS" > /etc/postfix/sasl_passwd
+  postconf -e "smtp_sasl_auth_enable = yes"
+else
+  # if user and pass are not set, just echo the host/port (otherwise if they're not set, we echo an empty user/pass, with a colon : in between)
+  # also set SASL auth to no (this is useful for IP-based auth instead of user/pass auth)
+  echo "[$RELAY_HOST]:$RELAY_PORT" > /etc/postfix/sasl_passwd
+  postconf -e "smtp_sasl_auth_enable = no"
+fi
 chown root:root /etc/postfix/sasl_passwd
 chmod 600 /etc/postfix/sasl_passwd
 postmap lmdb:/etc/postfix/sasl_passwd
