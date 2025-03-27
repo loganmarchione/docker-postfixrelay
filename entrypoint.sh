@@ -115,6 +115,11 @@ else
   postconf -e "message_size_limit = $MSG_SIZE"
 fi
 
+# Enable SUBMISSIONS/TLS
+if [[ "$RELAY_SUBMISSIONS" == "true" ]]; then
+  postconf -e "smtp_tls_wrappermode = yes"
+fi
+
 # Client settings (for sending to the relay)
 postconf -e "smtp_tls_security_level = encrypt"
 postconf -e "smtp_tls_loglevel = 1"
@@ -153,11 +158,6 @@ if [[ -z "$TEST_EMAIL" ]]; then
 else
   printf "# STATE: Sending test email\n"
   echo -e "Subject: Postfix relay test \r\nTest of Postfix relay from Docker container startup\nSent on $(date)\n" | sendmail -F "[Alert from Postfix]" "$TEST_EMAIL"
-fi
-
-# Enable SUBMISSIONS/TLS
-if [[ "$RELAY_SUBMISSIONS" == "true" ]]; then
-  postconf -e "smtp_tls_wrappermode = yes"
 fi
 
 # Start Postfix
