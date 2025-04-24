@@ -55,20 +55,21 @@ Runs Postfix (as a relay) in Docker
   - `X.X.X`: [Semantic version](https://semver.org/) (use if you want to stick on a specific version)
 
 ### Environment variables
-| Variable           | Required?                 | Definition                                  | Example                    | Comments                                                     |
-|--------------------|---------------------------|---------------------------------------------|----------------------------|--------------------------------------------------------------|
-| TZ                 | Yes                       | Timezone                                    | America/New_York           | https://en.wikipedia.org/wiki/List_of_tz_database_time_zones |
-| RELAY_HOST         | Yes                       | Public SMTP server to use                   | smtp.gmail.com             |                                                              |
-| RELAY_PORT         | Yes                       | Public SMTP port to use                     | 587                        |                                                              |
-| RELAY_USER         | No                        | Address to login to $RELAY_HOST             | SMTP username              |                                                              |
-| RELAY_PASS         | No                        | Password to login to $RELAY_HOST            | SMTP password              | If using Gmail 2FA, you will need to setup an app password   |
-| RELAY_SUBMISSIONS  | No (default: false)       | Use of submissions/TLS to $RELAY_HOST       | true                       | Needed when the server requests submissions/implicit TLS (enables Postfix's `tls_wrappermode` [(doc)](https://www.postfix.org/postconf.5.html#smtp_tls_wrappermode)). |
-| TEST_EMAIL         | No                        | Address to receive test email               | receive_address@domain.com | If not set, test email will **not** be sent                  |
-| MYORIGIN           | No                        | Domain of the "from" address                | domain.com                 | Needed for things like AWS SES where the domain must be set  |
-| FROMADDRESS        | No                        | Changes the "from" address                  | my_email@domain.com        | Needed for some SMTP services where the FROM address needs to be set, [fixes issue 19](https://github.com/loganmarchione/docker-postfixrelay/issues/19) |
-| MYNETWORKS         | No (default: 0.0.0.0/0)   | Networks that Postfix will forward mail for | 1.2.3.4/24, 5.6.7.8/24     | Single or multiple trusted networks separated with a comma   |
-| MSG_SIZE           | No (default: 10240000)    | Postfix `message_size_limit` in bytes       | 30720000                   |                                                              |
-| LOG_DISABLE        | No (default: false)       | Setting to `true` disables logging          | true                       |                                                              |
+| Variable           | Required?                          | Definition                                  | Example                    | Comments                                                                                                                                                              |
+|--------------------|------------------------------------|---------------------------------------------|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| TZ                 | Yes                                | Timezone                                    | America/New_York           | https://en.wikipedia.org/wiki/List_of_tz_database_time_zones                                                                                                          |
+| RELAY_HOST         | Yes                                | Public SMTP server to use                   | smtp.gmail.com             |                                                                                                                                                                       |
+| RELAY_PORT         | Yes                                | Public SMTP port to use                     | 587                        |                                                                                                                                                                       |
+| RELAY_USER         | No                                 | Address to login to $RELAY_HOST             | SMTP username              |                                                                                                                                                                       |
+| RELAY_PASS         | No                                 | Password to login to $RELAY_HOST            | SMTP password              | If using Gmail 2FA, you will need to setup an app password                                                                                                            |
+| RELAY_SUBMISSIONS  | No (default: false)                | Use of submissions/TLS to $RELAY_HOST       | true                       | Needed when the server requests submissions/implicit TLS (enables Postfix's `tls_wrappermode` [(doc)](https://www.postfix.org/postconf.5.html#smtp_tls_wrappermode)). |
+| TEST_EMAIL         | No                                 | Address to receive test email               | receive_address@domain.com | If not set, test email will **not** be sent                                                                                                                           |
+| TEST_EMAIL_SUBJECT | No (default: "Postfix relay test") | Subject of test email                       | Destroy After Reading      | Useful if you're running multiple instances and want to tell them apart                                                                                               |
+| MYORIGIN           | No                                 | Domain of the "from" address                | domain.com                 | Needed for things like AWS SES where the domain must be set                                                                                                           |
+| FROMADDRESS        | No                                 | Changes the "from" address                  | my_email@domain.com        | Needed for some SMTP services where the FROM address needs to be set, [fixes issue 19](https://github.com/loganmarchione/docker-postfixrelay/issues/19)               |
+| MYNETWORKS         | No (default: 0.0.0.0/0)            | Networks that Postfix will forward mail for | 1.2.3.4/24, 5.6.7.8/24     | Single or multiple trusted networks separated with a comma                                                                                                            |
+| MSG_SIZE           | No (default: 10240000)             | Postfix `message_size_limit` in bytes       | 30720000                   |                                                                                                                                                                       |
+| LOG_DISABLE        | No (default: false)                | Setting to `true` disables logging          | true                       |                                                                                                                                                                       |
 
 ### Ports
 | Port on host              | Port in container | Comments            |
@@ -100,6 +101,7 @@ services:
       # - RELAY_PASS_FILE=/run/secrets/RELAY_PASS_FILE
       - RELAY_SUBMISSIONS=true
       - TEST_EMAIL=test_email@domain.com
+      - TEST_EMAIL_SUBJECT=Destroy After Reading
       - MYORIGIN=domain.com
       - FROMADDRESS=my_email@domain.com
       - MYNETWORKS=1.2.3.4/24

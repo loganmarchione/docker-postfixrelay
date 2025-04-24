@@ -18,6 +18,7 @@ services:
       # - RELAY_PASS_FILE=/run/secrets/RELAY_PASS_FILE
       - RELAY_SUBMISSIONS=true
       - TEST_EMAIL=test_email@domain.com
+      - TEST_EMAIL_SUBJECT=Destroy After Reading
       - MYORIGIN=domain.com
       - FROMADDRESS=my_email@domain.com
       - MYNETWORKS=1.2.3.4/24
