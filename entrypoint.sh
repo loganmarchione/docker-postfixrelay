@@ -157,7 +157,9 @@ if [[ -z "$TEST_EMAIL" ]]; then
   printf "# WARN: TEST_EMAIL is undefined, continuing without a test email\n"
 else
   printf "# STATE: Sending test email\n"
-  echo -e "Subject: Postfix relay test \r\nTest of Postfix relay from Docker container startup\nSent on $(date)\n" | sendmail -F "[Alert from Postfix]" "$TEST_EMAIL"
+  # Use the value of TEST_EMAIL_SUBJECT if set, otherwise use "Postfix relay test"
+  EMAIL_SUBJECT="${TEST_EMAIL_SUBJECT:-Postfix relay test}"
+  echo -e "Subject: $EMAIL_SUBJECT \r\nTest of Postfix relay from Docker container startup\nSent on $(date)\n" | sendmail -F "[Alert from Postfix]" "$TEST_EMAIL"
 fi
 
 # Start Postfix
