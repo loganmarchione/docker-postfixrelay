@@ -11,6 +11,11 @@
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
 # (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
 #  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
+# this funciton sets $XYZ_DB_PASSWORD to first item that has a value:
+#   $XYZ_DB_PASSWORD
+#   Contents of the file referenced in the $XYZ_DB_PASSWORD_FILE variable
+#   'example' (default value passed)
+#
 file_env() {
   # Main variable name (e.g., RELAY_PASS)
   local var="$1"
@@ -18,22 +23,30 @@ file_env() {
   local fileVar="${var}_FILE"
   # Optional default value if neither is set
   local def="${2:-}"
-
-  # Make sure both are not set at the same time
-  if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
-    printf >&2 '#ERROR: Both %s and %s are set (but are exclusive)\n' "$var" "$fileVar"
-    exit 1
-  fi
-
-  # Set value as default first
-  local val="$def"
+  # Set value as null first
+  local val=""
 
   # If var is set, set value to var
   if [ "${!var:-}" ]; then
     val="${!var}"
-  # Else, if using fileVar, set value to fileVar
-  elif [ "${!fileVar:-}" ]; then
+    printf "# STATE: ${var} is defined by ${var}\n"
+  # if fileVar set and the file exists, set value to contents of the file
+  elif [ "${!fileVar:-}" ] && [ -f "${!fileVar}" ]; then
     val="$(< "${!fileVar}")"
+    if [ "${val:-}" ]; then
+      printf "# STATE: ${var} is defined by ${fileVar}\n"
+    fi
+  fi
+
+  # If default passed and value not set, set value to default
+  if [ "${def:-}" ] && [ ! "${val:-}" ]; then
+    val="$def"
+    printf "# STATE: ${var} is defined by default\n"
+  fi
+
+  # Report If value not set
+  if [ ! "${val:-}" ]; then
+    printf "# STATE: ${var} is not defined\n"
   fi
 
   # Clean up
@@ -63,6 +76,7 @@ else
 fi
 
 # Test variables for relay
+printf "# STATE: RELAY_HOST:RELAY_PORT is defined as ${RELAY_HOST}:${RELAY_PORT}\n"
 if [[ -z "$RELAY_HOST" || -z "$RELAY_PORT" ]]; then
   printf "# ERROR: Either RELAY_HOST or RELAY_PORT are undefined, exiting!\n"
   exit 1
@@ -85,6 +99,7 @@ printf "# STATE: Configuring Postfix\n"
 postconf -e "inet_interfaces = all"
 postconf -e "mydestination ="
 postconf -e "mynetworks = ${MYNETWORKS:=0.0.0.0/0}"
+printf "# STATE: MYNETWORKS is defined as ${MYNETWORKS}\n"
 postconf -e "relayhost = [$RELAY_HOST]:$RELAY_PORT"
 
 # Set the "from" domain, needed for things like AWS SES
@@ -116,6 +131,7 @@ else
 fi
 
 # Enable SUBMISSIONS/TLS
+printf "# STATE: RELAY_SUBMISSIONS is defined as ${RELAY_SUBMISSIONS:=false}\n"
 if [[ "$RELAY_SUBMISSIONS" == "true" ]]; then
   postconf -e "smtp_tls_wrappermode = yes"
 fi
